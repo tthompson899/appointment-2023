@@ -1,0 +1,57 @@
+## About Appointment
+Build the backend of an api to manage users and appointments. 
+
+During covid, my dentist office specifically kept calling me to change appointments- It made me wonder how things are done from their end and how to possibly make the experience better overall. 
+
+This api is specifically for a dentist’s office to help manage their database.
+
+If you would like to follow along in the series - The playlist link for this video can be found <a href="https://www.youtube.com/playlist?list=PLxyLoVOL_gY5SzhYeWqDkKHxxl8hETqQb" target="_blank">here</a>
+<br>
+
+## Tech stack
+    - Laravel/PHP
+    - SQL
+
+## Project setup
+- Create .env file
+    - This should be a replica of the .env.example except:
+    - `DB_DATABASE=appointment`
+    - `DB_USERNAME=root`
+    - `DB_PASSWORD=`
+    NOTE: Password and Username is whatever you set it to. To login to mysql in the command line type in this command: `mysql -u root -p`
+- Laravel valet
+    - If you do not have Laravel Valet installed, follow the instructions [here](https://laravel.com/docs/7.x/valet#the-park-command) 
+        ##### TL/DR
+        - `brew update`
+        - `brew install php`
+        - Install composer [here](https://getcomposer.org/)
+        - `composer global require laravel/valet`. 
+            Be sure the ~/.composer/vendor/bin directory is in your system's "PATH".
+        - `valet install`
+    - Directions to serve the site (https://laravel.com/docs/6.x/valet#serving-sites): 
+        ##### TL/DR
+        - In your terminal, make a new directory for the project: 
+            - `mkdir ~/Code`
+            - `cd ~/Code`
+            - run `valet park`
+    - Fork or clone project here into `~/Code` directory: [appointment api](git@github.com:tthompson899/appointment.git)
+    - Once project is cloned, spin up the website at [appointment.test/api/users](http://appointment.test/api/users)
+
+- MySQL
+    - `brew install mysql`
+    - `brew services start mysql`
+
+    - Once valet and project has been cloned locally, run `composer install`
+
+## How to view api
+Use Postman [install here](https://www.postman.com/downloads/) or browser to visit api route
+    - Example route to visit [Get all users](http://appointment.test/api/users)
+
+## How to run Test
+- Initialise the database seeder by running the command: `php artisan db:seed`
+- Remove all tables and add new data: `php artisan migrate:fresh --seed`
+
+**If you need to make changes to the database:**
+- Run the command: `php artisan migrate:fresh --seed`
+- Make your changes
+- Then run the command `php artisan db:seed` and confirm your changes in the database.
