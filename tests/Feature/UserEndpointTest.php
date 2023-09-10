@@ -18,9 +18,6 @@ class UserEndpointTest extends TestCase
         $this->setupFaker();
     }
 
-    /**
-     * A basic feature test example.
-     */
     public function testGetUsers(): void
     {
         $users = User::factory()->count(15)->create();
