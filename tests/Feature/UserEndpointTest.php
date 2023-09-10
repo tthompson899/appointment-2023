@@ -54,7 +54,6 @@ class UserEndpointTest extends TestCase
 
         $createdUser = User::latest()->first();
 
-        // @todo adjust assertions
         $this->assertEquals($createdUser->name, $data['name']);
         $this->assertEquals($createdUser->email, $data['email']);
         $this->assertEquals($createdUser->phone, $data['phone']);
