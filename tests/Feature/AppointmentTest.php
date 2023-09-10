@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use App\Models\Appointment;
 use App\Models\Type;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class AppointmentTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * A basic feature test example.
      */
