@@ -27,7 +27,7 @@ class AppointmentController extends Controller
 
     public function create(Request $request)
     {
-        $params = $request->query();
+        $params = $request->only('user_id', 'type_id', 'date_of_appointment');
 
         $newAppt = $this->appointment->createAppointment($params);
 
@@ -38,7 +38,7 @@ class AppointmentController extends Controller
 
     public function update($id, Request $request)
     {
-        $params = $request->query();
+        $params = $request->only('user_id', 'type_id', 'date_of_appointment', 'completed', 'cancelled', 'no_show');
         Log::info('update_params', [
             'params' => $params
         ]);
