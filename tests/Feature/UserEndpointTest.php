@@ -96,4 +96,20 @@ class UserEndpointTest extends TestCase
         $deletedUser = User::find($user->id);
         $this->assertEmpty($deletedUser);
     }
+
+    public function testUnableToUpdateUserNotFound(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertNotEmpty($user);
+        $user->delete();
+
+        $data = [
+            'email' => $this->faker->unique()->safeEmail(),
+        ];
+
+        $response = $this->put('/api/user/' . $user->id, $data);
+
+        $response->assertStatus(404);
+    }
 }
