@@ -24,13 +24,13 @@ class UserController extends Controller
         $user = $request->only('name', 'email', 'phone', 'date_of_birth');
 
         if (! $foundUser = User::find($userId)) {
-            return response('Unable to find user - User not updated', 404)
+            return response('Unable to find user: User not updated', 404)
                   ->header('Content-Type', 'text/plain');
         }
 
         $foundUser->update($user);
 
-        $badResponse = response('User Update has failed - User not updated', 400)
+        $badResponse = response('User Update has failed: User not updated', 400)
         ->header('Content-Type', 'text/plain');
 
         return $foundUser ? 'User has been updated.' : $badResponse;
@@ -38,6 +38,13 @@ class UserController extends Controller
 
     public function delete($userId)
     {
-        return User::find($userId)->delete();
+        $user = User::find($userId);
+
+        if (! $user) {
+            return response('Unable to find user: User not deleted', 404)
+            ->header('Content-Type', 'text/plain');
+        }
+
+        $user->delete();
     }
 }

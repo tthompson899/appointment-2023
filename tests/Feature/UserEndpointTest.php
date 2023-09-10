@@ -112,4 +112,18 @@ class UserEndpointTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function testUnableToDeleteUserNotFound(): void
+    {
+        $user = User::factory()->create();
+
+        $existingUser = User::find($user->id);
+        $this->assertNotEmpty($existingUser);
+
+        $existingUser->delete();
+
+        $response = $this->delete('/api/user/' . $user->id);
+
+        $response->assertStatus(404);
+    }
 }
