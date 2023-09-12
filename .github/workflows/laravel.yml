@@ -1,6 +1,6 @@
 # GitHub Action for Laravel with PostgreSQL and Redis
 name: Testing Laravel with PostgreSQL
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   laravel:
     name: Laravel (PHP ${{ matrix.php-versions }})
@@ -14,7 +14,7 @@ jobs:
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USERNAME: tiffany
-      DB_PASSWORD: 
+      # DB_PASSWORD: 
       DB_DATABASE: appointment
 
     strategy:
