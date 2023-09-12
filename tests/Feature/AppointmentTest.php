@@ -33,9 +33,12 @@ class AppointmentTest extends TestCase
 
     public function testCreateAppointment():void
     {
+        $user = User::factory()->create();
+        $type = Type::factory()->create();
+
         $data = [
-            'user_id' => 1,
-            'type_id' => 5,
+            'user_id' => $user->id,
+            'type_id' => $type->id,
             'date_of_appointment' => '2023-01-20 13:00:00',
         ];
 
