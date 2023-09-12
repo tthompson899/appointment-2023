@@ -45,20 +45,24 @@ class AppointmentController extends Controller
         $appt = $this->appointment->find($id);
 
         if (! $appt) {
-            return 'Unable to find appointment.';
+            return response('Unable to find appointment.', 404)
+            ->header('Content-Type', 'text/plain');
         }
 
         $updatedAppointment = $appt->update($params);
+        $badResponse = response('Appointment Update has failed: Appointment not updated', 400)
+        ->header('Content-Type', 'text/plain');
 
-        return $updatedAppointment ? 'Appointment has been updated.' : 'Update Appointment failed.';
+        return $updatedAppointment ? 'Appointment has been updated.' : $badResponse;
     }
 
     public function delete($id)
     {
         $appt = $this->appointment->find($id);
 
-        if (! $appt) {
-            return 'Appointment not found.';
+        if (empty($appt)) {
+            return response('Appointment not found.', 404)
+            ->header('Content-Type', 'text/plain');
         }
 
         return $appt->delete();
