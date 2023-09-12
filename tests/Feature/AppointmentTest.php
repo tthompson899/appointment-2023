@@ -12,9 +12,6 @@ class AppointmentTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * A basic feature test example.
-     */
     public function testGetAllAppointments(): void
     {
         $user = User::factory()->create();
@@ -94,5 +91,43 @@ class AppointmentTest extends TestCase
 
         $deletedAppointment = Appointment::find($appointment->id);
         $this->assertEmpty($deletedAppointment);
+    }
+
+    public function testUnableToUpdateAppointmentNotFound(): void
+    {
+        $appointment = Appointment::factory()
+        ->for(User::factory()->create())
+        ->for(Type::factory()->create())
+        ->create();
+
+        $this->assertNotEmpty($appointment);
+        $appointment->delete();
+
+        $data = [
+            'no_show' => true,
+        ];
+
+        $response = $this->put('/api/appointment/' . $appointment->id, $data);
+
+        $response->assertStatus(404);
+        $response->assertContent('Unable to find appointment.');
+    }
+
+    public function testUnableToDeleteAppointmentNotFound(): void
+    {
+        $appointment = Appointment::factory()
+            ->for(User::factory()->create())
+            ->for(Type::factory()->create())
+            ->create();
+
+        $existingAppointment = Appointment::find($appointment->id);
+        $this->assertNotEmpty($existingAppointment);
+
+        $existingAppointment->delete();
+
+        $response = $this->delete('/api/appointment/' . $existingAppointment->id);
+
+        $response->assertStatus(404);
+        $response->assertContent('Appointment not found.');
     }
 }
