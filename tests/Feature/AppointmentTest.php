@@ -165,7 +165,7 @@ class AppointmentTest extends TestCase
         });
     }
 
-    public function testSendEmailNotSentAppointmentCreated():void
+    public function testEmailNotSentNoTypeId():void
     {
         Mail::fake();
 
@@ -182,6 +182,26 @@ class AppointmentTest extends TestCase
 
         $response->assertStatus(404);
 
+        Mail::assertNothingSent();
+    }
+
+    public function testEmailNotSentNoUserId(): void
+    {
+        Mail::fake();
+
+        $type = Type::factory()->create();
+
+        $data = [
+            'type_id' => $type->id,
+            'date_of_appointment' => '2023-10-15 08:30:00',
+        ];
+
+        Mail::assertNothingSent();
+
+        $response = $this->post('/api/appointment', $data);
+
+        $response->assertStatus(404);
+        
         Mail::assertNothingSent();
     }
 }
