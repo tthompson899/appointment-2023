@@ -32,8 +32,7 @@ class AppointmentController extends Controller
         $newAppt = $this->appointment->createAppointment($params);
 
         if (is_string($newAppt)) {
-            return response($newAppt, 404)
-            ->header('Content-Type', 'text/plain');
+            return response($newAppt, 404)->header('Content-Type', 'text/plain');
         }
 
         $this->sendEmail($newAppt);

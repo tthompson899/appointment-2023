@@ -56,11 +56,11 @@ class Appointment extends Model
         $user = User::find(Arr::get($params, 'user_id'));
 
         if (! $user) {
-            return 'Unable to create appointment: User not found!';
+            return 'Unable to create appointment: User not found.';
         }
 
         if (! $type = Type::find(Arr::get($params, 'type_id'))) {
-            return 'Unable to create appointment: Type does not exist!';
+            return 'Unable to create appointment: Type does not exist.';
         }
 
         $createdAppointment = $user->appointments()->create([
