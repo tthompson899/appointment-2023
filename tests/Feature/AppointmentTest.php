@@ -136,7 +136,7 @@ class AppointmentTest extends TestCase
         $response->assertContent('Appointment not found.');
     }
 
-    public function testSendEmailAppointmentCreated():void
+    public function testSendEmailAppointmentCreated(): void
     {
         Mail::fake();
 
@@ -165,7 +165,7 @@ class AppointmentTest extends TestCase
         });
     }
 
-    public function testEmailNotSentNoTypeId():void
+    public function testEmailNotSentNoTypeId(): void
     {
         Mail::fake();
 
@@ -181,6 +181,7 @@ class AppointmentTest extends TestCase
         $response = $this->post('/api/appointment', $data);
 
         $response->assertStatus(404);
+        $response->assertContent('Unable to create appointment: Type does not exist.');
 
         Mail::assertNothingSent();
     }
@@ -201,7 +202,8 @@ class AppointmentTest extends TestCase
         $response = $this->post('/api/appointment', $data);
 
         $response->assertStatus(404);
-        
+        $response->assertContent('Unable to create appointment: User not found.');
+
         Mail::assertNothingSent();
     }
 }
