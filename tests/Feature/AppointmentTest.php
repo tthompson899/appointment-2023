@@ -164,4 +164,24 @@ class AppointmentTest extends TestCase
                 $mail->appointment->type->name === $createdAppointment->type->name;
         });
     }
+
+    public function testSendEmailNotSentAppointmentCreated():void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create();
+
+        $data = [
+            'user_id' => $user->id,
+            'date_of_appointment' => '2023-03-07 15:30:00',
+        ];
+
+        Mail::assertNothingSent();
+
+        $response = $this->post('/api/appointment', $data);
+
+        $response->assertStatus(404);
+
+        Mail::assertNothingSent();
+    }
 }
