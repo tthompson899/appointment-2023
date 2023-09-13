@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\AppointmentCreated;
 use App\Models\Appointment;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AppointmentTest extends TestCase
@@ -132,5 +134,34 @@ class AppointmentTest extends TestCase
 
         $response->assertStatus(404);
         $response->assertContent('Appointment not found.');
+    }
+
+    public function testSendEmailAppointmentCreated():void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create();
+        $type = Type::factory()->create();
+
+        $data = [
+            'user_id' => $user->id,
+            'type_id' => $type->id,
+            'date_of_appointment' => '2023-01-20 13:00:00',
+        ];
+
+        Mail::assertNothingSent();
+
+        $response = $this->post('/api/appointment', $data);
+
+        $response->assertStatus(201);
+
+        $createdAppointment = Appointment::latest()->first();
+ 
+        Mail::assertSent(function (AppointmentCreated $mail) use ($createdAppointment) {
+            return $mail->appointment->id === $createdAppointment->id &&
+                $mail->hasTo($createdAppointment->user->email) &&
+                $mail->appointment->user->name === $createdAppointment->user->name &&
+                $mail->appointment->type->name === $createdAppointment->type->name;
+        });
     }
 }
