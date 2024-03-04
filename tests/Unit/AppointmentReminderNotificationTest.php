@@ -38,4 +38,28 @@ class AppointmentReminderNotificationTest extends TestCase
 
         Mail::assertSentCount(1);
     }
+
+    public function testDoesNotSendReminderEmailForAppointmentEightDaysBefore(): void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create();
+        $type = Type::factory()->create();
+        $appointmentDate = Carbon::now()->addDays(8);
+        $appointment = Appointment::factory()->for($user)->for($type)->create([
+            'date_of_appointment' => Carbon::parse($appointmentDate->format('Y-m-d') . ' 05:30:00', 'America/Chicago')->format('Y-m-d H:i A'),
+        ]);
+
+        $this->artisan("app:appointment-reminder")
+            ->assertExitCode(0);
+
+        Mail::assertNotSent(function (AppointmentReminder $mail) use ($appointment) {
+            return $mail->appointment->id === $appointment->id &&
+                $mail->hasTo($appointment->user->email) &&
+                $mail->appointment->user->name === $appointment->user->name &&
+                $mail->appointment->type->name === $appointment->type->name;
+        });
+
+        Mail::assertSentCount(0);
+    }
 }
