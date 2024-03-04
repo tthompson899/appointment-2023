@@ -22,7 +22,7 @@ class AppointmentFactory extends Factory
         $key = array_rand($halfHourInterval);
         $time = $halfHourInterval[$key];
         $newTimeInstance = Carbon::createFromFormat('H:i A', $time, 'America/Chicago')->format('H:i A');
-        $dateTimeAppointment = Carbon::parse($appointmentDate . ' ' . $newTimeInstance)->format('Y-m-d H:i A');
+        $dateTimeAppointment = Carbon::parse($appointmentDate . ' ' . $newTimeInstance, 'America/Chicago')->format('Y-m-d H:i A');
 
         return [
             'date_of_appointment' => $dateTimeAppointment,
